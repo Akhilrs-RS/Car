@@ -5,7 +5,7 @@ import {
   Calendar, 
   Gauge, 
   Compass, 
-  DollarSign, 
+  IndianRupee, 
   Star, 
   ChevronDown, 
   ChevronUp, 
@@ -26,7 +26,7 @@ const initialVehicles = [
     make: "Lucid",
     model: "Air Dream Edition",
     year: 2022,
-    price: 84900,
+    price: 7046700,
     kmDriven: 12000,
     fuelType: "Electric",
     transmission: "Automatic",
@@ -43,7 +43,7 @@ const initialVehicles = [
     make: "Range Rover",
     model: "Autobiography LWB",
     year: 2021,
-    price: 98500,
+    price: 8175500,
     kmDriven: 28000,
     fuelType: "Diesel",
     transmission: "Automatic",
@@ -60,7 +60,7 @@ const initialVehicles = [
     make: "Rimac",
     model: "Nevera Hypercar",
     year: 2023,
-    price: 185000,
+    price: 15355000,
     kmDriven: 1500,
     fuelType: "Electric",
     transmission: "Automatic",
@@ -77,7 +77,7 @@ const initialVehicles = [
     make: "Toyota",
     model: "Camry Hybrid",
     year: 2020,
-    price: 24500,
+    price: 2033500,
     kmDriven: 35000,
     fuelType: "Hybrid",
     transmission: "Automatic",
@@ -94,7 +94,7 @@ const initialVehicles = [
     make: "Honda",
     model: "Civic Touring",
     year: 2019,
-    price: 19800,
+    price: 1643400,
     kmDriven: 48000,
     fuelType: "Petrol",
     transmission: "Automatic",
@@ -108,15 +108,15 @@ const initialVehicles = [
   }
 ]
 
-export default function Home() {
+export default function Home({ showToast, onSelectCar, onExplore }) {
   // Search & Filter state
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedBrand, setSelectedBrand] = useState('All')
   const [selectedLocation, setSelectedLocation] = useState('All')
-  const [maxPrice, setMaxPrice] = useState(200000)
+  const [maxPrice, setMaxPrice] = useState(20000000)
   
   // EMI Calculator state
-  const [loanAmount, setLoanAmount] = useState(50000)
+  const [loanAmount, setLoanAmount] = useState(4000000)
   const [interestRate, setInterestRate] = useState(6.5)
   const [loanTerm, setLoanTerm] = useState(5) // in years
   const [monthlyPayment, setMonthlyPayment] = useState(0)
@@ -251,13 +251,13 @@ export default function Home() {
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider">Max Price</label>
-                  <span className="text-xs font-bold text-blue-400">${maxPrice.toLocaleString()}</span>
+                  <span className="text-xs font-bold text-blue-400">₹{maxPrice.toLocaleString('en-IN')}</span>
                 </div>
                 <input 
                   type="range"
-                  min="10000"
-                  max="200000"
-                  step="5000"
+                  min="1000000"
+                  max="20000000"
+                  step="500000"
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(Number(e.target.value))}
                   className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
@@ -336,7 +336,7 @@ export default function Home() {
                         <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">{car.make}</span>
                         <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">{car.model}</h3>
                       </div>
-                      <span className="text-xl font-extrabold text-blue-400">${car.price.toLocaleString()}</span>
+                      <span className="text-xl font-extrabold text-blue-400">₹{car.price.toLocaleString('en-IN')}</span>
                     </div>
 
                     <p className="text-slate-400 text-xs leading-relaxed mb-6">
@@ -366,10 +366,16 @@ export default function Home() {
                 </div>
 
                 <div className="p-6 border-t border-slate-850 bg-slate-950/20 flex gap-3">
-                  <button className="flex-1 py-2.5 bg-slate-850 hover:bg-slate-800 text-slate-300 font-semibold rounded-xl text-xs transition-colors border border-slate-800">
+                  <button 
+                    onClick={() => onSelectCar(car)}
+                    className="flex-1 py-2.5 bg-slate-850 hover:bg-slate-800 text-slate-300 font-semibold rounded-xl text-xs transition-colors border border-slate-800"
+                  >
                     View Details
                   </button>
-                  <button className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-xs transition-colors shadow-lg shadow-blue-600/10">
+                  <button 
+                    onClick={() => showToast(`Test Drive Booking initiated for ${car.make} ${car.model}!`)}
+                    className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-xs transition-colors shadow-lg shadow-blue-600/10"
+                  >
                     Book Test Drive
                   </button>
                 </div>
@@ -415,7 +421,7 @@ export default function Home() {
                     <div className="p-5">
                       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">{car.make}</span>
                       <h3 className="text-sm font-bold text-white truncate mb-2">{car.model}</h3>
-                      <div className="text-lg font-black text-blue-400 mb-4">${car.price.toLocaleString()}</div>
+                      <div className="text-lg font-black text-blue-400 mb-4">₹{car.price.toLocaleString('en-IN')}</div>
                       
                       <div className="flex flex-col gap-2 border-t border-slate-850/60 pt-3 text-[11px] text-slate-400">
                         <div className="flex justify-between">
@@ -435,7 +441,10 @@ export default function Home() {
                   </div>
 
                   <div className="p-5 pt-0">
-                    <button className="w-full py-2 bg-slate-850 hover:bg-slate-800 text-slate-300 font-semibold rounded-xl text-xs transition-colors border border-slate-800">
+                    <button 
+                      onClick={() => showToast(`Vehicle inspection request submitted for ${car.make} ${car.model}!`)}
+                      className="w-full py-2 bg-slate-850 hover:bg-slate-800 text-slate-300 font-semibold rounded-xl text-xs transition-colors border border-slate-800"
+                    >
                       Inspect Vehicle
                     </button>
                   </div>
@@ -479,7 +488,10 @@ export default function Home() {
                 <span>Flexible Balloon EMI Plans</span>
               </div>
             </div>
-            <button className="px-6 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold rounded-xl transition-all duration-200 shadow-xl shadow-indigo-900/30">
+            <button 
+              onClick={() => { onExplore(); showToast("Browsing premium performance collection"); }}
+              className="px-6 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold rounded-xl transition-all duration-200 shadow-xl shadow-indigo-900/30"
+            >
               Browse Premium Showcase
             </button>
           </div>
@@ -520,7 +532,7 @@ export default function Home() {
           {/* Interactive Calculator Applet */}
           <div className="bg-slate-900 border border-slate-800 p-6 md:p-8 rounded-3xl shadow-xl shadow-black/40">
             <h3 className="font-display text-xl font-bold text-white mb-6 flex items-center gap-2 border-b border-slate-800 pb-4">
-              <DollarSign className="w-5 h-5 text-blue-400" />
+              <IndianRupee className="w-5 h-5 text-blue-400" />
               EMI Estimator
             </h3>
             
@@ -528,20 +540,20 @@ export default function Home() {
             <div className="mb-6">
               <div className="flex justify-between text-xs font-semibold mb-2">
                 <span className="text-slate-400">Loan Amount</span>
-                <span className="text-blue-400 font-bold">${loanAmount.toLocaleString()}</span>
+                <span className="text-blue-400 font-bold">₹{loanAmount.toLocaleString('en-IN')}</span>
               </div>
               <input 
                 type="range"
-                min="10000"
-                max="150000"
-                step="5000"
+                min="500000"
+                max="15000000"
+                step="500000"
                 value={loanAmount}
                 onChange={(e) => setLoanAmount(Number(e.target.value))}
                 className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
               />
               <div className="flex justify-between text-[10px] text-slate-600 mt-1">
-                <span>$10,000</span>
-                <span>$150,000</span>
+                <span>₹5 Lakhs</span>
+                <span>₹1.5 Crores</span>
               </div>
             </div>
 
@@ -590,10 +602,13 @@ export default function Home() {
             {/* Result Board */}
             <div className="bg-slate-950/70 p-6 rounded-2xl border border-slate-850 text-center mb-6">
               <span className="text-xs text-slate-500 uppercase tracking-widest font-bold block mb-1">Estimated Monthly EMI</span>
-              <div className="font-display text-3xl md:text-4xl font-black text-white">${monthlyPayment}</div>
+              <div className="font-display text-3xl md:text-4xl font-black text-white">₹{monthlyPayment}</div>
             </div>
 
-            <button className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-sm transition-colors shadow-lg shadow-blue-600/20">
+            <button 
+              onClick={() => showToast(`Finance application for ₹${loanAmount.toLocaleString('en-IN')} submitted successfully!`)}
+              className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-sm transition-colors shadow-lg shadow-blue-600/20"
+            >
               Apply For Finance Now
             </button>
           </div>
@@ -643,7 +658,10 @@ export default function Home() {
               <span className="text-xs font-bold text-blue-500 uppercase tracking-widest block mb-2">Automotive Insights</span>
               <h2 className="font-display text-3xl font-extrabold text-white">Latest Buying Guides & Tips</h2>
             </div>
-            <button className="text-sm font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1 group">
+            <button 
+              onClick={() => showToast("Loading all blog insights...")}
+              className="text-sm font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1 group"
+            >
               View All Blog Articles <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </button>
           </div>
@@ -664,7 +682,10 @@ export default function Home() {
                   <h3 className="text-base font-bold text-white mb-2 leading-snug hover:text-blue-400 cursor-pointer transition-colors">{post.title}</h3>
                   <p className="text-slate-400 text-xs leading-relaxed mb-6">{post.desc}</p>
                 </div>
-                <div className="text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1 cursor-pointer">
+                <div 
+                  onClick={() => showToast(`Reading guide: "${post.title}"`)}
+                  className="text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1 cursor-pointer"
+                >
                   Read Article <ArrowRight className="w-3.5 h-3.5" />
                 </div>
               </div>
