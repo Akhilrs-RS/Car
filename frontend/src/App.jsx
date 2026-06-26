@@ -1,49 +1,43 @@
 import { useState } from 'react'
 import { 
   Car, 
-  Layers, 
-  Database, 
-  Settings, 
-  Shield, 
+  LayoutDashboard, 
   Globe, 
-  Users, 
+  Settings, 
   TrendingUp, 
-  ClipboardList,
+  Users, 
+  ClipboardList, 
+  DollarSign,
+  Package,
   Wrench,
-  Smartphone,
-  ChevronRight
+  UserCheck
 } from 'lucide-react'
+import Home from './components/Home'
 
-function App() {
-  const [activeTab, setActiveTab] = useState('all')
+export default function App() {
+  const [currentView, setCurrentView] = useState('public') // 'public' or 'erp'
 
-  const techStack = [
-    { name: 'React (Vite)', role: 'Frontend framework with fast JSX development', icon: Globe, color: 'text-sky-400 bg-sky-950/40 border-sky-800' },
-    { name: 'Tailwind CSS v4', role: 'Premium utility-first styling system', icon: Layers, color: 'text-teal-400 bg-teal-950/40 border-teal-800' },
-    { name: 'ASP.NET Core Web API', role: 'High-performance C# backend services', icon: Settings, color: 'text-violet-400 bg-violet-950/40 border-violet-800' },
-    { name: 'MySQL Database', role: 'Reliable transactional relational data store', icon: Database, color: 'text-amber-400 bg-amber-950/40 border-amber-800' },
+  // ERP Mock Data
+  const kpis = [
+    { title: 'Total Sales Revenue', value: '$245,800', desc: '+12.5% from last month', icon: DollarSign, color: 'text-emerald-400 bg-emerald-950/40 border-emerald-800' },
+    { title: 'Active Inventory', value: '42 Cars', desc: '12 premium, 30 economy', icon: Package, color: 'text-blue-400 bg-blue-950/40 border-blue-800' },
+    { title: 'New Customer Leads', value: '18 Leads', desc: '4 pending test drive approval', icon: Users, color: 'text-violet-400 bg-violet-950/40 border-violet-800' },
+    { title: 'Workshop Job Cards', value: '8 Active', desc: '3 awaiting spare parts', icon: Wrench, color: 'text-amber-400 bg-amber-950/40 border-amber-800' },
   ]
 
-  const modules = [
-    { 
-      title: 'Public Website', 
-      desc: 'Customer-facing portal for second-hand vehicle listings, booking, and financing.', 
-      type: 'public',
-      features: ['Hero banner & vehicle showcase', 'Multi-attribute search & filters', '360° virtual gallery & specs', 'EMI Calculator & loan eligibility', 'Customer login, wishlist & booking', 'Self-upload car listing wizard']
-    },
-    { 
-      title: 'ERP & CRM Portal', 
-      desc: 'Internal management system for sales, operations, inventory, finance, and workshop.', 
-      type: 'erp',
-      features: ['Dashboard metrics & sales KPIs', 'CRM lead management & follow-ups', 'Inventory stock, pricing & status', 'Quotations & purchase order cycles', 'HRMS attendance, leave & payroll', 'Workshop mechanic allocation & spare parts']
-    }
+  const erpLeads = [
+    { id: 'LD-1024', customer: 'Sarah Jenkins', vehicle: 'Lucid Air', status: 'Approved', type: 'Finance Application', date: '2026-06-25' },
+    { id: 'LD-1025', customer: 'David Miller', vehicle: 'Range Rover autobiography', status: 'Pending Review', type: 'Test Drive Booking', date: '2026-06-26' },
+    { id: 'LD-1026', customer: 'Marcus Sterling', vehicle: 'Rimac Nevera', status: 'Contacted', type: 'Vehicle Enquiry', date: '2026-06-26' },
   ]
 
   return (
-    <div className="min-h-screen bg-[#0b0f19] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))] text-slate-100 flex flex-col font-sans">
-      {/* Header */}
-      <header className="border-b border-slate-800 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div className="min-h-screen bg-[#0b0f19] text-slate-100 flex flex-col font-sans">
+      {/* Universal Ecosystem Navigation Header */}
+      <header className="border-b border-slate-800 bg-[#0b0f19]/80 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+          
+          {/* Logo Brand */}
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-gradient-to-tr from-blue-600 to-violet-600 rounded-xl shadow-lg shadow-blue-500/20">
               <Car className="w-6 h-6 text-white" />
@@ -53,173 +47,190 @@ function App() {
                 AUTOFLOW
               </span>
               <span className="text-xs block text-slate-500 font-semibold tracking-wider uppercase">
-                Ecosystem Hub
+                Integrated Ecosystem
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-2 text-xs font-semibold px-3 py-1 bg-emerald-950/50 border border-emerald-800 text-emerald-400 rounded-full">
+
+          {/* Toggle Switches between System 1 (Website) & System 2 (ERP) */}
+          <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-850">
+            <button
+              onClick={() => setCurrentView('public')}
+              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-2 ${
+                currentView === 'public'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Globe className="w-3.5 h-3.5" />
+              Public Website
+            </button>
+            <button
+              onClick={() => setCurrentView('erp')}
+              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-2 ${
+                currentView === 'erp'
+                  ? 'bg-violet-600 text-white shadow-md'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <LayoutDashboard className="w-3.5 h-3.5" />
+              ERP & CRM Portal
+            </button>
+          </div>
+
+          {/* Environment Status */}
+          <div className="hidden md:flex items-center gap-3">
+            <span className="flex items-center gap-2 text-xs font-semibold px-3 py-1 bg-slate-900 border border-slate-800 text-slate-400 rounded-full">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              Environment Active
+              Live Sync
             </span>
           </div>
+
         </div>
       </header>
 
-      {/* Hero Section */}
-      <main className="flex-1 max-w-7xl mx-auto px-6 py-12 w-full">
-        <section className="text-center max-w-3xl mx-auto mb-16">
-          <h1 className="font-display font-extrabold text-4xl sm:text-6xl tracking-tight text-white mb-6">
-            Integrated Second-Hand <br/>
-            <span className="bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 bg-clip-text text-transparent">
-              Car Selling Ecosystem
-            </span>
-          </h1>
-          <p className="text-slate-400 text-lg leading-relaxed mb-8">
-            A premium full-stack solution running React JS (Vite + Tailwind) on the frontend, powered by an ASP.NET Core REST API backend and a MySQL relational database.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <a 
-              href="#explore"
-              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white font-medium rounded-xl shadow-lg shadow-blue-600/20 transition-all duration-200 flex items-center gap-2 group"
-            >
-              Explore Architecture
-              <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-            </a>
-            <div 
-              className="px-6 py-3 bg-slate-900 border border-slate-800 text-slate-300 font-medium rounded-xl hover:bg-slate-800/80 transition-colors cursor-pointer"
-              onClick={() => document.getElementById('modules').scrollIntoView({ behavior: 'smooth' })}
-            >
-              View System Modules
-            </div>
-          </div>
-        </section>
-
-        {/* Tech Stack Cards */}
-        <section id="explore" className="mb-16">
-          <div className="text-center mb-8">
-            <h2 className="font-display text-2xl font-bold text-white mb-2">Technical Foundations</h2>
-            <p className="text-slate-400 text-sm">Configured stack components inside the project directory</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {techStack.map((tech, idx) => (
-              <div key={idx} className="bg-slate-900/50 border border-slate-800/80 p-6 rounded-2xl flex flex-col justify-between hover:border-slate-700 transition-all duration-300 group">
-                <div>
-                  <div className={`p-3 rounded-xl border w-fit mb-4 transition-transform group-hover:scale-105 duration-300 ${tech.color}`}>
-                    <tech.icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-2">{tech.name}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">{tech.role}</p>
-                </div>
+      {/* Main View Area */}
+      <div className="flex-1">
+        {currentView === 'public' ? (
+          /* System 1: Public Website Customer Portal */
+          <Home />
+        ) : (
+          /* System 2: Management Software ERP & CRM Dashboard */
+          <section className="max-w-7xl mx-auto px-6 py-10 animate-fade-in">
+            {/* Header info */}
+            <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                <span className="text-xs font-bold text-violet-400 uppercase tracking-widest block mb-1">Internal Operations</span>
+                <h1 className="font-display text-3xl font-extrabold text-white">Management Software Dashboard</h1>
               </div>
-            ))}
-          </div>
-        </section>
-
-        {/* System Modules Showcase */}
-        <section id="modules" className="mb-16 border-t border-slate-900 pt-16">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
-            <div>
-              <h2 className="font-display text-3xl font-bold text-white mb-2">Ecosystem Modules</h2>
-              <p className="text-slate-400 text-sm">Two independent software components sharing a unified REST API</p>
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-slate-400 font-semibold">User Role: <strong className="text-violet-400">System Admin</strong></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-800"></span>
+                <span className="text-xs text-slate-400 font-semibold">Branch: <strong className="text-violet-400">All Locations</strong></span>
+              </div>
             </div>
-            <div className="flex gap-2 mt-4 md:mt-0">
-              {['all', 'public', 'erp'].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-2 text-xs font-semibold rounded-lg border transition-all duration-200 capitalize ${
-                    activeTab === tab
-                      ? 'bg-slate-800 border-slate-700 text-white'
-                      : 'bg-transparent border-transparent text-slate-400 hover:text-white'
-                  }`}
-                >
-                  {tab === 'all' ? 'Show All' : tab}
-                </button>
-              ))}
-            </div>
-          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {modules
-              .filter((m) => activeTab === 'all' || m.type === activeTab)
-              .map((m, idx) => (
-                <div key={idx} className="relative overflow-hidden bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 p-8 rounded-3xl group hover:border-slate-700 transition-all duration-300">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-500/10 to-transparent rounded-bl-full pointer-events-none"></div>
-                  
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider ${
-                      m.type === 'public' 
-                        ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' 
-                        : 'bg-violet-500/10 text-violet-400 border border-violet-500/20'
-                    }`}>
-                      {m.type === 'public' ? 'Client Web Application' : 'Enterprise ERP Suite'}
-                    </span>
+            {/* ERP KPI Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+              {kpis.map((kpi, idx) => (
+                <div key={idx} className="bg-slate-900/50 border border-slate-850 p-6 rounded-2xl flex items-center justify-between">
+                  <div>
+                    <span className="text-xs font-semibold text-slate-500 block mb-1">{kpi.title}</span>
+                    <span className="text-2xl font-extrabold text-white block mb-1">{kpi.value}</span>
+                    <span className="text-[10px] font-bold text-slate-400">{kpi.desc}</span>
                   </div>
-
-                  <h3 className="font-display text-2xl font-bold text-white mb-3">{m.title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-6 border-b border-slate-900 pb-6">{m.desc}</p>
-                  
-                  <h4 className="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Features Outlined in SRS</h4>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {m.features.map((feat, fIdx) => (
-                      <li key={fIdx} className="flex items-start gap-2.5 text-slate-400 text-sm">
-                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 shrink-0"></span>
-                        <span>{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className={`p-3 rounded-xl border ${kpi.color}`}>
+                    <kpi.icon className="w-6 h-6" />
+                  </div>
                 </div>
               ))}
-          </div>
-        </section>
-
-        {/* Directory Layout & Code Mapping */}
-        <section className="bg-slate-950 border border-slate-900 rounded-3xl p-8 mb-8">
-          <h2 className="font-display text-2xl font-bold text-white mb-6 flex items-center gap-2">
-            <Layers className="w-6 h-6 text-violet-500" />
-            Project Organization
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-display text-lg font-bold text-blue-400 mb-3 flex items-center gap-2">
-                <Globe className="w-5 h-5" />
-                Frontend Directory
-              </h3>
-              <div className="bg-slate-900/60 p-4 rounded-xl font-mono text-xs text-slate-400 border border-slate-900">
-                <div className="text-slate-300 font-bold">📂 Car/frontend/</div>
-                <div className="pl-4">📂 src/</div>
-                <div className="pl-8">📂 components/ <span className="text-slate-600"># UI elements</span></div>
-                <div className="pl-8">📄 App.jsx <span className="text-slate-600"># Main component</span></div>
-                <div className="pl-8">📄 index.css <span className="text-slate-600"># Tailwind CSS import</span></div>
-                <div className="pl-4">📄 package.json <span className="text-slate-600"># Dependencies config</span></div>
-                <div className="pl-4">📄 vite.config.js <span className="text-slate-600"># Vite + Tailwind V4 plugins</span></div>
-              </div>
             </div>
 
-            <div>
-              <h3 className="font-display text-lg font-bold text-violet-400 mb-3 flex items-center gap-2">
-                <Settings className="w-5 h-5" />
-                Backend Directory
-              </h3>
-              <div className="bg-slate-900/60 p-4 rounded-xl font-mono text-xs text-slate-400 border border-slate-900">
-                <div className="text-slate-300 font-bold">📂 Car/backend/</div>
-                <div className="pl-4">📂 Controllers/ <span className="text-slate-600"># Web API logic</span></div>
-                <div className="pl-4">📂 Properties/ <span className="text-slate-600"># Launch settings</span></div>
-                <div className="pl-4">📄 backend.csproj <span className="text-slate-600"># C# project settings</span></div>
-                <div className="pl-4">📄 Program.cs <span className="text-slate-600"># Middleware & routing</span></div>
-                <div className="pl-4">📄 appsettings.json <span className="text-slate-600"># MySQL credentials</span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
+            {/* CRM Lead Pipeline & Stock Status */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              
+              {/* Lead Pipeline */}
+              <div className="bg-slate-900/30 border border-slate-850 p-6 rounded-2xl lg:col-span-2">
+                <div className="flex justify-between items-center mb-6 border-b border-slate-850 pb-4">
+                  <h3 className="font-display font-bold text-lg text-white flex items-center gap-2">
+                    <Users className="w-5 h-5 text-violet-400" />
+                    Recent CRM Inquiries & Bookings
+                  </h3>
+                  <button className="text-xs font-bold text-violet-400 hover:text-violet-300">View All Leads</button>
+                </div>
 
-      {/* Footer */}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead>
+                      <tr className="border-b border-slate-850 text-slate-500 font-bold uppercase tracking-wider">
+                        <th className="pb-3">Lead ID</th>
+                        <th className="pb-3">Customer</th>
+                        <th className="pb-3">Vehicle Spec</th>
+                        <th className="pb-3">Request Type</th>
+                        <th className="pb-3">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-slate-300">
+                      {erpLeads.map((lead) => (
+                        <tr key={lead.id} className="border-b border-slate-850/60 hover:bg-slate-900/40 transition-colors">
+                          <td className="py-3.5 font-mono text-slate-400">{lead.id}</td>
+                          <td className="py-3.5 font-semibold text-white">{lead.customer}</td>
+                          <td className="py-3.5">{lead.vehicle}</td>
+                          <td className="py-3.5">
+                            <span className="px-2 py-0.5 rounded-full bg-slate-950 text-slate-400 border border-slate-850 text-[10px] font-medium">
+                              {lead.type}
+                            </span>
+                          </td>
+                          <td className="py-3.5">
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                              lead.status === 'Approved' 
+                                ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-800' 
+                                : lead.status === 'Pending Review' 
+                                  ? 'bg-amber-950/40 text-amber-400 border border-amber-800'
+                                  : 'bg-blue-950/40 text-blue-400 border border-blue-800'
+                            }`}>
+                              {lead.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Status Breakdown / Tools Panel */}
+              <div className="bg-slate-900/30 border border-slate-850 p-6 rounded-2xl">
+                <div className="flex justify-between items-center mb-6 border-b border-slate-850 pb-4">
+                  <h3 className="font-display font-bold text-lg text-white flex items-center gap-2">
+                    <Settings className="w-5 h-5 text-violet-400" />
+                    ERP Operations Control
+                  </h3>
+                </div>
+
+                <div className="space-y-3">
+                  <button className="w-full p-3.5 bg-slate-900/60 border border-slate-850 text-left rounded-xl hover:border-violet-500 hover:bg-slate-900 transition-all flex items-center gap-3 group">
+                    <div className="p-2 bg-violet-950/50 text-violet-400 rounded-lg group-hover:scale-105 duration-200">
+                      <Package className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-white mb-0.5">Procurement / Purchase Orders</h4>
+                      <p className="text-[10px] text-slate-500">Manage vendor details and inventory purchase.</p>
+                    </div>
+                  </button>
+
+                  <button className="w-full p-3.5 bg-slate-900/60 border border-slate-850 text-left rounded-xl hover:border-violet-500 hover:bg-slate-900 transition-all flex items-center gap-3 group">
+                    <div className="p-2 bg-violet-950/50 text-violet-400 rounded-lg group-hover:scale-105 duration-200">
+                      <Wrench className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-white mb-0.5">Workshop Job Cards</h4>
+                      <p className="text-[10px] text-slate-500">Assign mechanics and track vehicle service stages.</p>
+                    </div>
+                  </button>
+
+                  <button className="w-full p-3.5 bg-slate-900/60 border border-slate-850 text-left rounded-xl hover:border-violet-500 hover:bg-slate-900 transition-all flex items-center gap-3 group">
+                    <div className="p-2 bg-violet-950/50 text-violet-400 rounded-lg group-hover:scale-105 duration-200">
+                      <ClipboardList className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-white mb-0.5">Accounts & Billing Cycles</h4>
+                      <p className="text-[10px] text-slate-500">View ledgers, cashbooks, and generate GST invoices.</p>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </section>
+        )}
+      </div>
+
+      {/* Universal Footer */}
       <footer className="border-t border-slate-900 bg-slate-950/40 py-8">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-semibold text-slate-500">
           <div>
-            © {new Date().getFullYear()} Integrated Second-Hand Car Selling Ecosystem. All rights reserved.
+            © {new Date().getFullYear()} Autoflow Ecosystem. Built under software requirement specifications.
           </div>
           <div className="flex gap-4">
             <span className="hover:text-slate-300 cursor-pointer">Security Policy</span>
@@ -233,5 +244,3 @@ function App() {
     </div>
   )
 }
-
-export default App
